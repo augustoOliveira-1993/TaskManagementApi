@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  bff-github-users:
+    image: management-api:dev
+    container_name: management-api
+    build: .docker/development
+    volumes:
+      - .:/api
+    ports:
+      - 3001:3000
+    networks:
+      - backend
+    depends_on:
+      - db
+
+  db:
+    image: mongo
+    container_name: management-api-db
+    restart: always
+    volumes:
+      - management-api-db:/data/db
+    ports:
+      - '27018:27017'
+    networks:
+      - backend
+
+volumes:
+  management-api-db:
+
+networks:
+  backend:
+    driver: bridge
