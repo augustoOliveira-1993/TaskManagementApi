@@ -8,22 +8,22 @@ export class TaskResolver {
   constructor(private readonly taskService: TaskService) {}
 
   @Query(() => [TaskDto])
-  async Buscar() {
+  async search() {
     return await this.taskService.search();
   }
 
   @Query(() => [TaskDto])
-  async BuscarPorId(@Args('id') id: string) {
+  async SearchById(@Args('id') id: string) {
     return await this.taskService.searchBySku(id);
   }
 
   @Mutation(() => TaskDto)
-  async Cadastrar(@Args('Task') task: TaskInput) {
+  async Register(@Args('Task') task: TaskInput) {
     return await this.taskService.create(task);
   }
 
   @Mutation(() => TaskDto)
-  async Excluir(@Args('id') id: string) {
+  async Delete(@Args('id') id: string) {
     return await this.taskService.delete(id);
   }
 
