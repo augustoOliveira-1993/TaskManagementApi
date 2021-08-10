@@ -1,14 +1,13 @@
-import { ObjectType, Field, InputType } from '@nestjs/graphql';
-import { v4 as uuidv4 } from 'uuid';
+import { ObjectType, Field } from '@nestjs/graphql';
+// import { v4 as uuidv4 } from 'uuid';
 
-@InputType('TaskInput')
 @ObjectType('TaskType')
 export class TaskDto {
-  @Field(() => Object, { nullable: true })
+  @Field(() => String, { nullable: true })
   _id: string;
 
   @Field({ nullable: true })
-  taskId: uuidv4;
+  taskId: string;
 
   @Field({ nullable: true })
   userId: string;
@@ -26,7 +25,6 @@ export class TaskDto {
 
 // eslint-disable-next-line @typescript-eslint/class-name-casing
 
-@InputType('StatusHistoryInput')
 @ObjectType('StatusHistoryType')
 export class StatusHistoryDto {
   @Field(() => String, { nullable: true })

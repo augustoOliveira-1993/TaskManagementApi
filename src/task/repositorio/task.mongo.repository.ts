@@ -19,14 +19,4 @@ export class TaskRepository {
   async findAtMongo(id: string): Promise<Task[]> {
     return await this.taskModel.find({ _id: id }).exec();
   }
-
-  async delete(id: string): Promise<Task> {
-    return await this.taskModel.findByIdAndRemove({ _id: id });
-  }
-
-  async update(id: string, Task: any): Promise<Task> {
-    return await this.taskModel.findByIdAndUpdate(id, Task, {
-      new: true,
-    });
-  }
 }

@@ -1,9 +1,7 @@
 import { Document } from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
 
 export interface Task {
-  readonly id: number;
-  readonly taskId: uuidv4;
+  readonly taskId: string;
   readonly userId: string;
   readonly enable: boolean;
   readonly when: Date;
