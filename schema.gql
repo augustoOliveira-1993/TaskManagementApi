@@ -9,19 +9,30 @@ scalar DateTime
 
 type Mutation {
   createTask(Task: TaskInput!): TaskType!
+  AlterarTask(input: TaskInput!, userId: String!, taskId: String!): TaskType!
+  alterarStatus(status: String!, userId: String!, taskId: String!): TaskType!
+  deleteTask(userId: String!, taskID: String!): String!
 }
 
 type Query {
   search: [TaskType!]!
+  getID(userId: String!): TaskType!
+}
+
+enum StatusEnum {
+  PEDING
+  COMPLETED
+  CANCELED
 }
 
 type StatusHistoryType {
-  status: String
+  status: StatusEnum
   when: DateTime
 }
 
 input TaskInput {
   description: String
+  userId: String
   when: DateTime
 }
 
@@ -29,6 +40,7 @@ type TaskType {
   _id: String
   taskId: String
   userId: String
+  description: String
   enable: Boolean
   when: DateTime
   status_history: [StatusHistoryType!]

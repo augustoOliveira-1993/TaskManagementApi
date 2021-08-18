@@ -1,5 +1,5 @@
 import { ObjectType, Field } from '@nestjs/graphql';
-// import { v4 as uuidv4 } from 'uuid';
+import { StatusEnum } from './task.Enum.dto';
 
 @ObjectType('TaskType')
 export class TaskDto {
@@ -11,6 +11,9 @@ export class TaskDto {
 
   @Field({ nullable: true })
   userId: string;
+
+  @Field({ nullable: true })
+  description: string;
 
   @Field({ nullable: true })
   enable: boolean;
@@ -27,8 +30,8 @@ export class TaskDto {
 
 @ObjectType('StatusHistoryType')
 export class StatusHistoryDto {
-  @Field(() => String, { nullable: true })
-  status: string;
+  @Field(() => StatusEnum, { nullable: true })
+  status: StatusEnum;
 
   @Field(() => Date, { nullable: true })
   when: Date;
