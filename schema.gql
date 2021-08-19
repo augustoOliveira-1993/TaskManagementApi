@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AlterarTaskInput {
+  description: String
+  when: DateTime
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -9,18 +14,19 @@ scalar DateTime
 
 type Mutation {
   createTask(Task: TaskInput!): TaskType!
-  AlterarTask(input: TaskInput!, userId: String!, taskId: String!): TaskType!
+  AlterarTask(input: AlterarTaskInput!, userId: String!, taskId: String!): TaskType!
   alterarStatus(status: String!, userId: String!, taskId: String!): TaskType!
-  deleteTask(userId: String!, taskID: String!): String!
+  deleteTask(userId: String!, taskID: String!): TaskType!
 }
 
 type Query {
   search: [TaskType!]!
-  getID(userId: String!): TaskType!
+  getID(userId: String!): [TaskType!]!
+  getByOneTask(taskId: String!, userId: String!): TaskType!
 }
 
 enum StatusEnum {
-  PEDING
+  PENDING
   COMPLETED
   CANCELED
 }
@@ -43,5 +49,6 @@ type TaskType {
   description: String
   enable: Boolean
   when: DateTime
+  status: String!
   status_history: [StatusHistoryType!]
 }

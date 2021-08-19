@@ -1,4 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { AlterarTaskInput } from './dto/task.alterar.input.dto';
 import { TaskDto } from './dto/task.dto';
 import { StatusEnum } from './dto/task.Enum.dto';
 import { CreateTaskInput } from './dto/task.input.dto';
@@ -13,9 +14,17 @@ export class TaskResolver {
     return await this.taskService.get();
   }
 
-  @Query(() => TaskDto)
+  @Query(() => [TaskDto])
   async getID(@Args('userId') userid: string) {
-    return await this.taskService.getById(userid);
+    return await this.taskService.getAllByUser(userid);
+  }
+
+  @Query(() => TaskDto)
+  async getByOneTask(
+    @Args('userId') userid: string,
+    @Args('taskId') taskid: string,
+  ) {
+    return await this.taskService.getByOneTask(taskid, userid);
   }
 
   @Mutation(() => TaskDto)
@@ -27,8 +36,8 @@ export class TaskResolver {
   async AlterarTask(
     @Args('taskId') taskId: string,
     @Args('userId') userId: string,
-    @Args('input') task: CreateTaskInput,
-  ): Promise<CreateTaskInput> {
+    @Args('input') task: AlterarTaskInput,
+  ): Promise<AlterarTaskInput> {
     return this.taskService.updateTask(taskId, userId, task);
   }
 
@@ -41,7 +50,7 @@ export class TaskResolver {
     return this.taskService.updateStatus(taskId, userId, newStatus);
   }
 
-  @Mutation(() => String)
+  @Mutation(() => TaskDto)
   async deleteTask(
     @Args('taskID') taskId: string,
     @Args('userId') userId: string,

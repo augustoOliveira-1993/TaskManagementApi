@@ -1,15 +1,16 @@
 import { Document } from 'mongoose';
 
 export interface Task {
-  readonly taskId: string;
-  readonly userId: string;
-  readonly description: string;
-  readonly enable: boolean;
-  readonly when: Date;
-  readonly status_history: [
+  taskId: string;
+  userId: string;
+  description: string;
+  enable: boolean;
+  when: Date;
+  status: string;
+  status_history: [
     {
-      readonly status: string;
-      readonly when: Date;
+      status: string;
+      when: Date;
     },
   ];
 }

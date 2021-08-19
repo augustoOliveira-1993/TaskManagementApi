@@ -14,9 +14,21 @@ export class TaskService {
     return await this.TaskRepo.findAll();
   }
 
+  async getByOneTask(taskId: string, userId: string) {
+    return await this.TaskRepo.getByOneTask(taskId, userId);
+  }
+
   async getById(userId: any) {
-    const result = await this.TaskRepo.findAtMongo(userId);
+    const result = await this.TaskRepo.findAtOne(userId);
     if (result) {
+      return result;
+    }
+    throw new NotFoundException('Task not Found');
+  }
+
+  async getAllByUser(userId: any) {
+    const result = await this.TaskRepo.findAtMongo(userId);
+    if (result.length > 0) {
       return result;
     }
     throw new NotFoundException('Task not Found');
@@ -25,27 +37,24 @@ export class TaskService {
   async create(createDB: any) {
     createDB.taskId = uuidv4();
     createDB['status_history'] = [{ status: 'PENDING', when: new Date() }];
-    const mongo = await this.TaskRepo.findAtMongo(createDB.userId);
-    if (mongo) {
-      throw new BadRequestException('Task exists');
-    }
+
     return await this.TaskRepo.create(createDB);
   }
 
   async updateStatus(taskId: string, userId: string, newStatus: string) {
-    const OI = { status: newStatus, when: new Date() };
     const newResult = await this.getById(userId);
-    const nResult =
-      newResult.status_history[newResult.status_history.length - 1];
+    const currentStatus = newResult.status;
+
     if (
-      (nResult.status === 'COMPLETED' || nResult.status === 'CANCELED') &&
+      (currentStatus === 'COMPLETED' || currentStatus === 'CANCELED') &&
       newStatus != 'PENDING'
     ) {
       throw new NotFoundException('Não pode Fazer essa Alteração');
     }
+    newResult.status = newStatus;
+    newResult.status_history.push({ status: newStatus, when: new Date() });
 
-    const result = await this.TaskRepo.AtualizarStatus(taskId, userId, OI);
-    return result;
+    return await this.TaskRepo.update(taskId, userId, newResult);
   }
 
   async updateTask(taskId: string, userId: string, task: any) {
@@ -53,7 +62,9 @@ export class TaskService {
   }
 
   async updateField(taskId: string, userId: string) {
-    const result = await this.TaskRepo.update(taskId, userId, false);
+    const result = await this.TaskRepo.update(taskId, userId, {
+      enable: false,
+    });
     if (result) {
       return 'Task Deletada com sucesso';
     }

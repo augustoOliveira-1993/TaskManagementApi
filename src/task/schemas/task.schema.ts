@@ -7,6 +7,7 @@ export const TaskSchema = new Schema(
     description: { type: String },
     enable: { type: Boolean, default: true },
     when: { type: Date },
+    status: { type: String, default: 'PENDING' },
     // eslint-disable-next-line @typescript-eslint/camelcase
     status_history: {
       type: [

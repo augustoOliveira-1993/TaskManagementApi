@@ -21,6 +21,8 @@ export class TaskDto {
   @Field(() => Date, { nullable: true })
   when: Date;
 
+  @Field()
+  status: string;
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   @Field(() => [StatusHistoryDto], { nullable: true })
   status_history: StatusHistoryDto[];
