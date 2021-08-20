@@ -7,7 +7,7 @@ import { Task } from '../interfaces/task.interface';
 export class TaskRepository {
   constructor(@InjectModel('Task') private readonly taskModel: Model<Task>) {}
 
-  async findAll(): Promise<Task[]> {
+  async search(): Promise<Task[]> {
     return this.taskModel.find({ enable: true }).exec();
   }
 
@@ -40,7 +40,7 @@ export class TaskRepository {
   // }
 
 
-  
+
 
   async update(taskId: string, userId: string, task: any): Promise<Task> {
     return await this.taskModel.findOneAndUpdate(

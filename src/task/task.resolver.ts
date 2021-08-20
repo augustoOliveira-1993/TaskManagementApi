@@ -11,12 +11,12 @@ export class TaskResolver {
 
   @Query(() => [TaskDto])
   async search() {
-    return await this.taskService.get();
+    return await this.taskService.search();
   }
 
   @Query(() => [TaskDto])
-  async getID(@Args('userId') userid: string) {
-    return await this.taskService.getAllByUser(userid);
+  async searchAllUserTasks(@Args('userId') userid: string) {
+    return await this.taskService.searchAllUserTasks(userid);
   }
 
   @Query(() => TaskDto)
@@ -29,11 +29,11 @@ export class TaskResolver {
 
   @Mutation(() => TaskDto)
   async createTask(@Args('Task') task: CreateTaskInput) {
-    return await this.taskService.create(task);
+    return await this.taskService.createTask(task);
   }
 
   @Mutation(() => TaskDto)
-  async AlterarTask(
+  async updateTask(
     @Args('taskId') taskId: string,
     @Args('userId') userId: string,
     @Args('input') task: AlterarTaskInput,
@@ -42,7 +42,7 @@ export class TaskResolver {
   }
 
   @Mutation(() => TaskDto)
-  async alterarStatus(
+  async updateStatus(
     @Args('taskId') taskId: string,
     @Args('userId') userId: string,
     @Args('status') newStatus: StatusEnum,

@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TaskRepository } from './repositorio/task.mongo.repository';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,8 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 export class TaskService {
   constructor(private readonly TaskRepo: TaskRepository) {}
 
-  async get() {
-    return await this.TaskRepo.findAll();
+  async search() {
+    return await this.TaskRepo.search();
   }
 
   async getByOneTask(taskId: string, userId: string) {
@@ -26,7 +22,7 @@ export class TaskService {
     throw new NotFoundException('Task not Found');
   }
 
-  async getAllByUser(userId: any) {
+  async searchAllUserTasks(userId: any) {
     const result = await this.TaskRepo.findAtMongo(userId);
     if (result.length > 0) {
       return result;
@@ -34,7 +30,7 @@ export class TaskService {
     throw new NotFoundException('Task not Found');
   }
 
-  async create(createDB: any) {
+  async createTask(createDB: any) {
     createDB.taskId = uuidv4();
     createDB['status_history'] = [{ status: 'PENDING', when: new Date() }];
 
